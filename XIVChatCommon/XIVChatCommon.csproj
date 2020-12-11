@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <LangVersion>8</LangVersion>
+        <Nullable>enable</Nullable>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <TargetFrameworks>net48;netcoreapp3.1</TargetFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MessagePack" Version="2.2.60" />
+        <PackageReference Include="Sodium.Core" Version="1.2.3" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,88 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>XIVChat_Desktop</RootNamespace>
+        <UseWPF>true</UseWPF>
+        <AssemblyName>XIVChat Desktop</AssemblyName>
+        <Nullable>enable</Nullable>
+        <Company>XIVChat</Company>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Remove="Resources\fonticon_ps4.tex.png" />
+        <None Remove="Resources\fonts\ffxiv.ttf" />
+        <None Remove="Resources\logo.ico" />
+        <None Remove="Resources\status\app_status_afk.png" />
+        <None Remove="Resources\status\app_status_contents.png" />
+        <None Remove="Resources\status\app_status_contents_same.png" />
+        <None Remove="Resources\status\app_status_contents_similar.png" />
+        <None Remove="Resources\status\app_status_cross_party_leader.png" />
+        <None Remove="Resources\status\app_status_cross_party_member.png" />
+        <None Remove="Resources\status\app_status_offline.png" />
+        <None Remove="Resources\status\app_status_online.png" />
+        <None Remove="Resources\status\app_status_party_leader.png" />
+        <None Remove="Resources\status\app_status_party_member.png" />
+        <None Remove="Resources\status\app_status_roleplaying.png" />
+        <None Remove="Resources\status\app_status_roleplaying.svg" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Resource Include="Resources\fonticon_ps4.tex.png" />
+        <Resource Include="Resources\fonts\ffxiv.ttf" />
+        <Resource Include="Resources\logo.ico" />
+        <Resource Include="Resources\status\app_status_afk.png" />
+        <Resource Include="Resources\status\app_status_contents.png" />
+        <Resource Include="Resources\status\app_status_contents_same.png" />
+        <Resource Include="Resources\status\app_status_contents_similar.png" />
+        <Resource Include="Resources\status\app_status_cross_party_leader.png" />
+        <Resource Include="Resources\status\app_status_cross_party_member.png" />
+        <Resource Include="Resources\status\app_status_offline.png" />
+        <Resource Include="Resources\status\app_status_online.png" />
+        <Resource Include="Resources\status\app_status_party_leader.png" />
+        <Resource Include="Resources\status\app_status_party_member.png" />
+        <Resource Include="Resources\status\app_status_roleplaying.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.8" />
+        <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="6.1.1" />
+        <PackageReference Include="ModernWpfUI" Version="0.9.2" />
+        <PackageReference Include="ModernWpfUI.MahApps" Version="0.9.2" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="Sodium.Core" Version="1.2.3" />
+        <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\XIVChatCommon\XIVChatCommon.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Properties\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\Resources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Page Update="Properties\DesignTimeResources.xaml">
+            <SubType>Designer</SubType>
+            <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+        </Page>
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,141 @@
+﻿<local:XivChatWindow x:Class="XIVChat_Desktop.TrustDialog"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:XIVChat_Desktop"
+                     xmlns:ui="http://schemas.modernwpf.com/2019"
+                     ui:WindowHelper.UseModernWindowStyle="True"
+                     SizeToContent="WidthAndHeight"
+                     WindowStartupLocation="CenterOwner"
+                     mc:Ignorable="d"
+                     Title="Key verification">
+    <Grid Margin="8">
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0"
+                   Grid.Row="0">
+            You are attempting to connect to a server you have never connected to before. Please check the server and ensure the two keys below match.
+        </TextBlock>
+
+        <Grid Grid.Column="0"
+              Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0">
+                Server:
+            </TextBlock>
+            <TextBlock x:Name="ServerPublicKey"
+                       Grid.Row="1"
+                       Grid.Column="0" />
+            <Grid Grid.Row="2"
+                  Grid.Column="0"
+                  Height="24"
+                  x:Name="ServerPublicKeyColours">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Rectangle Grid.Column="0" />
+                <Rectangle Grid.Column="1" />
+                <Rectangle Grid.Column="2" />
+                <Rectangle Grid.Column="3" />
+                <Rectangle Grid.Column="4" />
+                <Rectangle Grid.Column="5" />
+                <Rectangle Grid.Column="6" />
+                <Rectangle Grid.Column="7" />
+                <Rectangle Grid.Column="8" />
+                <Rectangle Grid.Column="9" />
+                <Rectangle Grid.Column="10" />
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="0"
+              Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0">
+                Client:
+            </TextBlock>
+            <TextBlock x:Name="ClientPublicKey"
+                       Grid.Row="1"
+                       Grid.Column="0" />
+            <Grid Grid.Row="2"
+                  Grid.Column="0"
+                  Height="24"
+                  x:Name="ClientPublicKeyColours">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Rectangle Grid.Column="0" />
+                <Rectangle Grid.Column="1" />
+                <Rectangle Grid.Column="2" />
+                <Rectangle Grid.Column="3" />
+                <Rectangle Grid.Column="4" />
+                <Rectangle Grid.Column="5" />
+                <Rectangle Grid.Column="6" />
+                <Rectangle Grid.Column="7" />
+                <Rectangle Grid.Column="8" />
+                <Rectangle Grid.Column="9" />
+                <Rectangle Grid.Column="10" />
+            </Grid>
+        </Grid>
+
+        <WrapPanel Grid.Row="3"
+                   Grid.Column="0"
+                   Orientation="Vertical">
+            <TextBlock>Give the key a name to remember it.</TextBlock>
+            <TextBox x:Name="KeyName">No name</TextBox>
+        </WrapPanel>
+
+        <TextBlock Grid.Row="4"
+                   Grid.Column="0">
+            Do both keys match?
+        </TextBlock>
+
+        <WrapPanel Grid.Row="5"
+                   Grid.Column="0">
+            <Button Click="Yes_Click">Yes</Button>
+            <Button Click="No_Click">No</Button>
+        </WrapPanel>
+    </Grid>
+</local:XivChatWindow>

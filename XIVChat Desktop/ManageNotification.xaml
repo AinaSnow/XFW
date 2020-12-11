@@ -1,0 +1,108 @@
+﻿<local:XivChatWindow x:Class="XIVChat_Desktop.ManageNotification"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:local="clr-namespace:XIVChat_Desktop"
+                     xmlns:ui="http://schemas.modernwpf.com/2019"
+                     ui:WindowHelper.UseModernWindowStyle="True"
+                     Closed="ManageNotification_OnClosed"
+                     mc:Ignorable="d"
+                     Title="Manage notification"
+                     Height="800"
+                     Width="450"
+                     d:DataContext="{d:DesignInstance local:ManageNotification}">
+    <local:XivChatWindow.CommandBindings>
+        <CommandBinding Command="local:ManageNotification.AddEmpty"
+                        Executed="AddEmpty_Execute"
+                        CanExecute="AddEmpty_CanExecute" />
+    </local:XivChatWindow.CommandBindings>
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBox Grid.Row="0"
+                 Margin="0,0,0,8"
+                 ui:ControlHelper.PlaceholderText="Name"
+                 ui:ControlHelper.Header="Name"
+                 Text="{Binding Notification.Name}" />
+
+        <Label Grid.Row="1"
+               Margin="0,0,0,8"
+               Content="Regular expressions" />
+
+        <ScrollViewer Height="100"
+                      Grid.Row="2">
+            <ItemsControl ItemsSource="{Binding Regexes}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox Margin="0,0,0,8">
+                            <TextBox.Text>
+                                <Binding Path="Value">
+                                    <Binding.ValidationRules>
+                                        <local:RegexValidator />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Button Grid.Row="3"
+                Margin="0,0,0,8"
+                Content="Add"
+                Command="local:ManageNotification.AddEmpty"
+                CommandParameter="{Binding Regexes}" />
+
+        <Label Grid.Row="4"
+               Margin="0,0,0,8"
+               Content="Substrings" />
+
+        <ScrollViewer Height="100"
+                      Grid.Row="5">
+            <ItemsControl ItemsSource="{Binding Substrings}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox Margin="0,0,0,8"
+                                 Text="{Binding Value}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Button Grid.Row="6"
+                Margin="0,0,0,8"
+                Content="Add"
+                Command="local:ManageNotification.AddEmpty"
+                CommandParameter="{Binding Substrings}" />
+
+        <CheckBox Grid.Row="7"
+                  IsChecked="{Binding Notification.MatchAll}"
+                  Content="Match all messages from selected channels" />
+
+        <Label Grid.Row="8"
+               Margin="0,0,0,8"
+               Content="Channels" />
+
+        <ScrollViewer Grid.Row="9">
+            <WrapPanel x:Name="Channels"
+                       Orientation="Vertical" />
+        </ScrollViewer>
+    </Grid>
+</local:XivChatWindow>

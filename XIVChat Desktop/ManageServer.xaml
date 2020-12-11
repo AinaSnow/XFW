@@ -1,0 +1,77 @@
+﻿<local:XivChatWindow x:Class="XIVChat_Desktop.ManageServer"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:XIVChat_Desktop"
+                     mc:Ignorable="d"
+                     xmlns:ui="http://schemas.modernwpf.com/2019"
+                     ui:WindowHelper.UseModernWindowStyle="True"
+                     WindowStartupLocation="CenterOwner"
+                     SizeToContent="WidthAndHeight"
+                     Title="Manage server"
+                     d:DataContext="{d:DesignInstance local:ManageServer}">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition MinWidth="200" />
+        </Grid.ColumnDefinitions>
+
+        <Label VerticalAlignment="Center"
+               Grid.Row="0"
+               Grid.Column="0">
+            Name
+        </Label>
+        <TextBox Margin="4,0,0,0"
+                 Grid.Row="0"
+                 Grid.Column="1"
+                 x:Name="ServerName"
+                 Text="{Binding Server.Name, Mode=OneTime}" />
+
+        <Label VerticalAlignment="Center"
+               Grid.Row="1"
+               Grid.Column="0">
+            IP Address
+        </Label>
+        <TextBox Margin="4,4,0,0"
+                 Grid.Row="1"
+                 Grid.Column="1"
+                 x:Name="ServerHost"
+                 Text="{Binding Server.Host, Mode=OneTime}" />
+
+        <Label VerticalAlignment="Center"
+               Grid.Row="2"
+               Grid.Column="0">
+            Port
+        </Label>
+        <TextBox Margin="4,4,0,0"
+                 Grid.Row="2"
+                 Grid.Column="1"
+                 x:Name="ServerPort"
+                 Text="{Binding Server.Port, Mode=OneTime}"
+                 ui:ControlHelper.PlaceholderText="14777" />
+
+        <WrapPanel Margin="0,8,0,0"
+                   Grid.Row="3"
+                   Grid.ColumnSpan="2"
+                   Grid.Column="0"
+                   HorizontalAlignment="Right">
+            <Button IsCancel="True"
+                    Click="Cancel_Click">
+                Cancel
+            </Button>
+            <Button Margin="4,0,0,0"
+                    IsDefault="True"
+                    Click="Save_Click">
+                Save
+            </Button>
+        </WrapPanel>
+    </Grid>
+</local:XivChatWindow>

@@ -1,0 +1,124 @@
+﻿<local:XivChatWindow x:Class="XIVChat_Desktop.ConfigWindow"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:XIVChat_Desktop"
+                     xmlns:cc="clr-namespace:XIVChat_Desktop.Controls"
+                     xmlns:ui="http://schemas.modernwpf.com/2019"
+                     ui:WindowHelper.UseModernWindowStyle="True"
+                     mc:Ignorable="d"
+                     MinWidth="450"
+                     MinHeight="350"
+                     WindowStartupLocation="CenterOwner"
+                     SizeToContent="WidthAndHeight"
+                     Title="Configuration"
+                     d:DataContext="{d:DesignInstance local:ConfigWindow}">
+    <TabControl>
+        <TabItem Header="Servers">
+            <cc:SavedServers ItemsSource="{Binding Config.Servers}"
+                             ItemDoubleClick="SavedServers_ItemDoubleClick"
+                             ControlsVisibility="Visible" />
+        </TabItem>
+        <TabItem Header="Window">
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel>
+                    <CheckBox Content="Always on top"
+                              IsChecked="{Binding Config.AlwaysOnTop}"
+                              Checked="AlwaysOnTop_Checked"
+                              Unchecked="AlwaysOnTop_Unchecked" />
+                    <CheckBox Content="Compact mode"
+                              IsChecked="{Binding Config.CompactMode}" />
+                    <ComboBox x:Name="ThemeChooser"
+                              ui:ControlHelper.Header="Theme"
+                              SelectedItem="{Binding Config.Theme}" />
+                    <Slider ui:ControlHelper.Header="Opacity"
+                            Value="{Binding Config.Opacity}"
+                            Minimum=".3"
+                            Maximum="1" />
+                    <TextBox HorizontalAlignment="Left"
+                             PreviewTextInput="NumericInputFilter"
+                             Text="{Binding Config.FontSize, Converter={StaticResource DoubleConverter}}"
+                             ui:ControlHelper.Header="Log font size"
+                             Width="200" />
+                    <TextBox ui:ControlHelper.Header="Messages to store locally"
+                             HorizontalAlignment="Left"
+                             PreviewTextInput="NumericInputFilter"
+                             Text="{Binding Config.LocalBacklogMessages, Converter={StaticResource UIntConverter}}"
+                             Width="200" />
+                </StackPanel>
+
+                <Button Grid.Row="2"
+                        HorizontalAlignment="Right"
+                        Click="Save_Click">
+                    Save
+                </Button>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Connection">
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBox Grid.Row="0"
+                         Grid.Column="0"
+                         ui:ControlHelper.Header="Backlog messages to request"
+                         HorizontalAlignment="Left"
+                         PreviewTextInput="NumericInputFilter"
+                         Text="{Binding Config.BacklogMessages, Converter={StaticResource UShortConverter}}"
+                         Width="200" />
+
+                <Button Grid.Row="2"
+                        HorizontalAlignment="Right"
+                        Click="Save_Click">
+                    Save
+                </Button>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Notifications">
+            <Grid Margin="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <ListView Grid.Column="0"
+                          x:Name="Notifications"
+                          ItemsSource="{Binding Config.Notifications}"
+                          MouseDoubleClick="Notifications_DoubleClick">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Name"
+                                            DisplayMemberBinding="{Binding Name}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <StackPanel Grid.Column="1"
+                            Margin="8,0,0,0"
+                            Orientation="Vertical">
+                    <Button Margin="0,0,0,4"
+                            HorizontalAlignment="Stretch"
+                            Content="Add"
+                            Click="Notifications_Add_Click" />
+                    <Button Margin="0,0,0,4"
+                            HorizontalAlignment="Stretch"
+                            Content="Edit"
+                            Click="Notifications_Edit_Click" />
+                    <Button HorizontalAlignment="Stretch"
+                            Content="Delete"
+                            Click="Notifications_Delete_Click" />
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</local:XivChatWindow>
