@@ -18,7 +18,7 @@ namespace XIVChatCommon {
             byte[] rx = new byte[32];
             byte[] tx = new byte[32];
 
-            for (int i = 0; i < 32; i++) {
+            for (var i = 0; i < 32; i++) {
                 rx[i] = hash[i];
                 tx[i] = hash[i + 32];
             }
@@ -39,7 +39,7 @@ namespace XIVChatCommon {
             byte[] rx = new byte[32];
             byte[] tx = new byte[32];
 
-            for (int i = 0; i < 32; i++) {
+            for (var i = 0; i < 32; i++) {
                 tx[i] = hash[i];
                 rx[i] = hash[i + 32];
             }

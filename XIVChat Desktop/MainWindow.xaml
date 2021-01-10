@@ -7,6 +7,7 @@
                      xmlns:cc="clr-namespace:XIVChat_Desktop.Controls"
                      xmlns:ui="http://schemas.modernwpf.com/2019"
                      xmlns:server="clr-namespace:XIVChatCommon.Message.Server;assembly=XIVChatCommon"
+                     xmlns:message="clr-namespace:XIVChatCommon.Message;assembly=XIVChatCommon"
                      ui:WindowHelper.UseModernWindowStyle="True"
                      ui:TitleBar.ExtendViewIntoTitleBar="{Binding App.Config.CompactMode}"
                      mc:Ignorable="d"
@@ -178,8 +179,96 @@
 
                         <TextBlock Margin="8,4,0,0"
                                    Grid.Row="1"
-                                   Text="{Binding App.Connection.CurrentChannel, ElementName=Main, UpdateSourceTrigger=PropertyChanged}" />
+                                   MouseDown="Channel_MouseDown"
+                                   Text="{Binding App.Connection.CurrentChannel, ElementName=Main, UpdateSourceTrigger=PropertyChanged}">
+                            <TextBlock.CommandBindings>
+                                <CommandBinding Command="local:MainWindow.ChangeChannel"
+                                                CanExecute="ChangeChannel_CanExecute"
+                                                Executed="ChangeChannel_Execute" />
+                            </TextBlock.CommandBindings>
 
+                            <TextBlock.ContextMenu>
+                                <ContextMenu
+                                    DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                    <MenuItem Header="Tell"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Tell}" />
+                                    <MenuItem Header="Say"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Say}" />
+                                    <MenuItem Header="Party"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Party}" />
+                                    <MenuItem Header="Alliance"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Alliance}" />
+                                    <MenuItem Header="Yell"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Yell}" />
+                                    <MenuItem Header="Shout"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Shout}" />
+                                    <MenuItem Header="Free Company"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.FreeCompany}" />
+                                    <MenuItem Header="PvP Team"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.PvpTeam}" />
+                                    <MenuItem Header="Novice Network"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.NoviceNetwork}" />
+                                    <MenuItem Header="Cross-world Linkshell [1]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.CrossLinkshell1}" />
+                                    <MenuItem Header="Cross-world Linkshell [2]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.CrossLinkshell2}" />
+                                    <MenuItem Header="Cross-world Linkshell [3]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.CrossLinkshell3}" />
+                                    <MenuItem Header="Cross-world Linkshell [4]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.CrossLinkshell4}" />
+                                    <MenuItem Header="Cross-world Linkshell [5]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.CrossLinkshell5}" />
+                                    <MenuItem Header="Cross-world Linkshell [6]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.CrossLinkshell6}" />
+                                    <MenuItem Header="Cross-world Linkshell [7]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.CrossLinkshell7}" />
+                                    <MenuItem Header="Cross-world Linkshell [8]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.CrossLinkshell8}" />
+                                    <MenuItem Header="Linkshell [1]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Linkshell1}" />
+                                    <MenuItem Header="Linkshell [2]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Linkshell2}" />
+                                    <MenuItem Header="Linkshell [3]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Linkshell3}" />
+                                    <MenuItem Header="Linkshell [4]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Linkshell4}" />
+                                    <MenuItem Header="Linkshell [5]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Linkshell5}" />
+                                    <MenuItem Header="Linkshell [6]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Linkshell6}" />
+                                    <MenuItem Header="Linkshell [7]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Linkshell7}" />
+                                    <MenuItem Header="Linkshell [8]"
+                                              Command="local:MainWindow.ChangeChannel"
+                                              CommandParameter="{x:Static message:InputChannel.Linkshell8}" />
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
+                        </TextBlock>
+                        
                         <TextBox x:Name="InputBox"
                                  ui:ControlHelper.PlaceholderText="{Binding InputPlaceholder, ElementName=Main, UpdateSourceTrigger=PropertyChanged}"
                                  IsEnabled="{Binding App.Connection.Available, ElementName=Main, UpdateSourceTrigger=PropertyChanged, FallbackValue=False}"

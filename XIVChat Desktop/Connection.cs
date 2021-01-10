@@ -65,6 +65,13 @@ namespace XIVChat_Desktop {
             this.outgoingMessages.Writer.TryWrite(msg.Encode());
         }
 
+        public void ChangeChannel(InputChannel channel) {
+            var msg = new ClientChannel {
+                Channel = channel,
+            };
+            this.outgoingMessages.Writer.TryWrite(msg.Encode());
+        }
+
         public void Disconnect() {
             this.cancel.Cancel();
             for (var i = 0; i < 2; i++) {
@@ -257,11 +264,12 @@ namespace XIVChat_Desktop {
             Close:
             try {
                 this.client.Close();
-            } catch (ObjectDisposedException) { }
+            } catch (ObjectDisposedException) { 
+            }
         }
 
         private async Task HandleIncoming(byte[] rawMessage) {
-            var type = (ServerOperation)rawMessage[0];
+            var type = (ServerOperation) rawMessage[0];
             var payload = new byte[rawMessage.Length - 1];
             Array.Copy(rawMessage, 1, payload, 0, payload.Length);
 

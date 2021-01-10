@@ -45,44 +45,18 @@ namespace XIVChatCommon.Message {
         public byte index;
     }
 
-    public class NameFormatting {
-        public string Before { get; private set; } = string.Empty;
-        public string After { get; private set; } = string.Empty;
-        public bool IsPresent { get; private set; } = true;
-
-        public static NameFormatting Empty() {
-            return new NameFormatting {
-                IsPresent = false,
-            };
-        }
-
-        public static NameFormatting Of(string before, string after) {
-            return new NameFormatting {
-                Before = before,
-                After = after,
-            };
-        }
-
-        public static NameFormatting Basic() {
-            return new NameFormatting {
-                Before = "",
-                After = ": ",
-            };
-        }
-    }
-
     public class ChatCode {
         private const ushort Clear7 = ~(~0 << 7);
 
-        private readonly ushort code;
+        public ushort Raw { get; }
 
-        public ChatType Type => (ChatType)(this.code & Clear7);
+        public ChatType Type => (ChatType)(this.Raw & Clear7);
         public ChatSource Source => this.SourceFrom(11);
         public ChatSource Target => this.SourceFrom(7);
-        private ChatSource SourceFrom(ushort shift) => (ChatSource)(1 << ((this.code >> shift) & 0xF));
+        private ChatSource SourceFrom(ushort shift) => (ChatSource)(1 << ((this.Raw >> shift) & 0xF));
 
-        public ChatCode(ushort code) {
-            this.code = code;
+        public ChatCode(ushort raw) {
+            this.Raw = raw;
         }
 
         public ChatType Parent() => this.Type switch {
@@ -273,56 +247,6 @@ namespace XIVChatCommon.Message {
         //            return null;
         //    }
         //}
-
-        public NameFormatting? NameFormat() => this.Type switch {
-            ChatType.Say => NameFormatting.Of("", ": "),
-            ChatType.Shout => NameFormatting.Of("", ": "),
-            ChatType.Yell => NameFormatting.Of("", ": "),
-            ChatType.NpcAnnouncement => NameFormatting.Of("", ": "),
-            ChatType.NpcDialogue => NameFormatting.Of("", ": "),
-            ChatType.TellOutgoing => NameFormatting.Of(">> ", ": "),
-            ChatType.TellIncoming => NameFormatting.Of("", " >> "),
-            ChatType.GmTell => NameFormatting.Of("[GM]", " >> "),
-            ChatType.GmSay => NameFormatting.Of("[GM]", ": "),
-            ChatType.GmShout => NameFormatting.Of("[GM]", ": "),
-            ChatType.GmYell => NameFormatting.Of("[GM]", ": "),
-            ChatType.GmParty => NameFormatting.Of("([GM]", ") "),
-            ChatType.GmFreeCompany => NameFormatting.Of("[FC]<[GM]", "> "),
-            ChatType.GmLinkshell1 => NameFormatting.Of("[1]<[GM]", "> "),
-            ChatType.GmLinkshell2 => NameFormatting.Of("[2]<[GM]", "> "),
-            ChatType.GmLinkshell3 => NameFormatting.Of("[3]<[GM]", "> "),
-            ChatType.GmLinkshell4 => NameFormatting.Of("[4]<[GM]", "> "),
-            ChatType.GmLinkshell5 => NameFormatting.Of("[5]<[GM]", "> "),
-            ChatType.GmLinkshell6 => NameFormatting.Of("[6]<[GM]", "> "),
-            ChatType.GmLinkshell7 => NameFormatting.Of("[7]<[GM]", "> "),
-            ChatType.GmLinkshell8 => NameFormatting.Of("[8]<[GM]", "> "),
-            ChatType.GmNoviceNetwork => NameFormatting.Of("[NOVICE][GM]", ": "),
-            ChatType.Party => NameFormatting.Of("(", ") "),
-            ChatType.CrossParty => NameFormatting.Of("(", ") "),
-            ChatType.Alliance => NameFormatting.Of("((", ")) "),
-            ChatType.PvpTeam => NameFormatting.Of("[PVP]<", "> "),
-            ChatType.FreeCompany => NameFormatting.Of("[FC]<", "> "),
-            ChatType.Linkshell1 => NameFormatting.Of("[1]<", "> "),
-            ChatType.Linkshell2 => NameFormatting.Of("[2]<", "> "),
-            ChatType.Linkshell3 => NameFormatting.Of("[3]<", "> "),
-            ChatType.Linkshell4 => NameFormatting.Of("[4]<", "> "),
-            ChatType.Linkshell5 => NameFormatting.Of("[5]<", "> "),
-            ChatType.Linkshell6 => NameFormatting.Of("[6]<", "> "),
-            ChatType.Linkshell7 => NameFormatting.Of("[7]<", "> "),
-            ChatType.Linkshell8 => NameFormatting.Of("[8]<", "> "),
-            ChatType.StandardEmote => NameFormatting.Empty(),
-            ChatType.CustomEmote => NameFormatting.Of("", ""),
-            ChatType.CrossLinkshell1 => NameFormatting.Of("[CWLS1]<", "> "),
-            ChatType.CrossLinkshell2 => NameFormatting.Of("[CWLS2]<", "> "),
-            ChatType.CrossLinkshell3 => NameFormatting.Of("[CWLS3]<", "> "),
-            ChatType.CrossLinkshell4 => NameFormatting.Of("[CWLS4]<", "> "),
-            ChatType.CrossLinkshell5 => NameFormatting.Of("[CWLS5]<", "> "),
-            ChatType.CrossLinkshell6 => NameFormatting.Of("[CWLS6]<", "> "),
-            ChatType.CrossLinkshell7 => NameFormatting.Of("[CWLS7]<", "> "),
-            ChatType.CrossLinkshell8 => NameFormatting.Of("[CWLS8]<", "> "),
-            ChatType.NoviceNetwork => NameFormatting.Of("[NOVICE]", ": "),
-            _ => null,
-        };
 
         public bool IsBattle() {
             switch (this.Type) {
@@ -641,7 +565,7 @@ namespace XIVChatCommon.Message {
         OtherPet = 2048,
     }
 
-    public enum InputChannel : byte {
+    public enum InputChannel : uint {
         Tell = 0,
         Say = 1,
         Party = 2,
@@ -671,6 +595,28 @@ namespace XIVChatCommon.Message {
         Linkshell7 = 25,
         Linkshell8 = 26,
     }
+
+    public static class InputChannelExt {
+        public static uint LinkshellIndex(this InputChannel channel) => channel switch {
+            InputChannel.Linkshell1 => 0,
+            InputChannel.Linkshell2 => 1,
+            InputChannel.Linkshell3 => 2,
+            InputChannel.Linkshell4 => 3,
+            InputChannel.Linkshell5 => 4,
+            InputChannel.Linkshell6 => 5,
+            InputChannel.Linkshell7 => 6,
+            InputChannel.Linkshell8 => 7,
+            InputChannel.CrossLinkshell1 => 0,
+            InputChannel.CrossLinkshell2 => 1,
+            InputChannel.CrossLinkshell3 => 2,
+            InputChannel.CrossLinkshell4 => 3,
+            InputChannel.CrossLinkshell5 => 4,
+            InputChannel.CrossLinkshell6 => 5,
+            InputChannel.CrossLinkshell7 => 6,
+            InputChannel.CrossLinkshell8 => 7,
+            _ => 0,
+        };
+}
 
     public enum PlayerListType : byte {
         Party = 1,

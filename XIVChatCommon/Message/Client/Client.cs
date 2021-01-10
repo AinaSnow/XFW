@@ -13,6 +13,7 @@ namespace XIVChatCommon.Message.Client {
         PlayerList = 6,
         LinkshellList = 7,
         Preferences = 8,
+        Channel = 9,
     }
 
     #region Ping
@@ -21,7 +22,7 @@ namespace XIVChatCommon.Message.Client {
         public static Ping Instance { get; } = new Ping();
 
         [IgnoreMember]
-        protected override byte Code => (byte)ClientOperation.Ping;
+        protected override byte Code => (byte) ClientOperation.Ping;
 
         protected override byte[] PayloadEncode() {
             return new byte[0];
@@ -38,7 +39,7 @@ namespace XIVChatCommon.Message.Client {
         public string Content { get; set; }
 
         [IgnoreMember]
-        protected override byte Code => (byte)ClientOperation.Message;
+        protected override byte Code => (byte) ClientOperation.Message;
 
         public ClientMessage(string content) {
             this.Content = content;
@@ -61,7 +62,7 @@ namespace XIVChatCommon.Message.Client {
         public static ClientShutdown Instance { get; } = new ClientShutdown();
 
         [IgnoreMember]
-        protected override byte Code => (byte)ClientOperation.Shutdown;
+        protected override byte Code => (byte) ClientOperation.Shutdown;
 
         protected override byte[] PayloadEncode() {
             return new byte[0];
@@ -77,7 +78,7 @@ namespace XIVChatCommon.Message.Client {
         [Key(0)]
         public ushort Amount { get; set; }
 
-        protected override byte Code => (byte)ClientOperation.Backlog;
+        protected override byte Code => (byte) ClientOperation.Backlog;
 
         public static ClientBacklog Decode(byte[] bytes) {
             return MessagePackSerializer.Deserialize<ClientBacklog>(bytes);
@@ -94,7 +95,7 @@ namespace XIVChatCommon.Message.Client {
         [Key(0)]
         public DateTime After { get; set; }
 
-        protected override byte Code => (byte)ClientOperation.CatchUp;
+        protected override byte Code => (byte) ClientOperation.CatchUp;
 
         public ClientCatchUp(DateTime after) {
             this.After = after;
@@ -171,7 +172,7 @@ namespace XIVChatCommon.Message.Client {
                 return false;
             }
 
-            value = (T)obj;
+            value = (T) obj;
             return true;
         }
     }
@@ -185,4 +186,23 @@ namespace XIVChatCommon.Message.Client {
     }
 
     #endregion
+    #region Channel
+
+    [MessagePackObject]
+    public class ClientChannel : IEncodable {
+        protected override byte Code => (byte) ClientOperation.Channel;
+
+        [Key(0)]
+        public InputChannel Channel { get; set; }
+
+        public static ClientChannel Decode(byte[] bytes) {
+            return MessagePackSerializer.Deserialize<ClientChannel>(bytes);
+        }
+
+        protected override byte[] PayloadEncode() {
+            return MessagePackSerializer.Serialize(this);
+        }
+    }
+
+    #endregion    
 }

@@ -11,14 +11,14 @@ namespace XIVChatCommon {
         private const uint MaxMessageLen = 128_000;
 
         public async static Task<byte[]> ReadSecretMessage(Stream s, byte[] key, CancellationToken token = default) {
-            int read = 0;
+            var read = 0;
 
             byte[] header = new byte[4 + 24];
             while (read < header.Length) {
                 read += await s.ReadAsync(header, read, header.Length - read, token);
             }
 
-            uint length = BitConverter.ToUInt32(header, 0);
+            var length = BitConverter.ToUInt32(header, 0);
             byte[] nonce = header.Skip(4).ToArray();
 
             if (length > MaxMessageLen) {
