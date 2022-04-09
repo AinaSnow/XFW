@@ -45,6 +45,7 @@ namespace XIVChat_Desktop {
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        [Obsolete]
         private async void Application_Startup(object sender, StartupEventArgs e) {
             Notifications.Initialise();
 

@@ -8,7 +8,7 @@
                      ui:WindowHelper.UseModernWindowStyle="True"
                      Closed="ManageNotification_OnClosed"
                      mc:Ignorable="d"
-                     Title="Manage notification"
+                     Title="管理通知"
                      Height="800"
                      Width="450"
                      d:DataContext="{d:DesignInstance local:ManageNotification}">
@@ -38,12 +38,12 @@
         <TextBox Grid.Row="0"
                  Margin="0,0,0,8"
                  ui:ControlHelper.PlaceholderText="Name"
-                 ui:ControlHelper.Header="Name"
+                 ui:ControlHelper.Header="名称"
                  Text="{Binding Notification.Name}" />
 
         <Label Grid.Row="1"
                Margin="0,0,0,8"
-               Content="Regular expressions" />
+               Content="常用表达" />
 
         <ScrollViewer Height="100"
                       Grid.Row="2">
@@ -66,7 +66,7 @@
 
         <Button Grid.Row="3"
                 Margin="0,0,0,8"
-                Content="Add"
+                Content="添加"
                 Command="local:ManageNotification.AddEmpty"
                 CommandParameter="{Binding Regexes}" />
 
@@ -88,17 +88,17 @@
 
         <Button Grid.Row="6"
                 Margin="0,0,0,8"
-                Content="Add"
+                Content="添加"
                 Command="local:ManageNotification.AddEmpty"
                 CommandParameter="{Binding Substrings}" />
 
         <CheckBox Grid.Row="7"
                   IsChecked="{Binding Notification.MatchAll}"
-                  Content="Match all messages from selected channels" />
+                  Content="匹配来自选定频道的所有消息" />
 
         <Label Grid.Row="8"
                Margin="0,0,0,8"
-               Content="Channels" />
+               Content="频道" />
 
         <ScrollViewer Grid.Row="9">
             <WrapPanel x:Name="Channels"

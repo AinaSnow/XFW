@@ -8,7 +8,7 @@
                      ui:WindowHelper.UseModernWindowStyle="True"
                      WindowStartupLocation="CenterOwner"
                      mc:Ignorable="d"
-                     Title="Manage tab"
+                     Title="管理选项卡"
                      Height="450"
                      Width="400"
                      d:DataContext="{d:DesignInstance local:ManageTab}">
@@ -24,18 +24,18 @@
                  x:Name="TabName"
                  Margin="0,0,0,8"
                  ui:ControlHelper.PlaceholderText="Name"
-                 ui:ControlHelper.Header="Name"
+                 ui:ControlHelper.Header="名称"
                  Text="{Binding Tab.Name, Mode=OneTime}" />
         <CheckBox Grid.Row="1"
                   x:Name="MarkdownToggle"
                   Margin="0,0,0,8"
-                  Content="Process messages as Markdown"
+                  Content="将消息处理为 Markdown"
                   IsChecked="{Binding Tab.ProcessMarkdown, Mode=OneTime}" />
         <TabControl Grid.Row="2"
                     x:Name="Tabs" />
         <Button Margin="0,8,0,0"
                 Grid.Row="3"
-                Content="Save"
+                Content="保存"
                 Click="Save_Click" />
     </Grid>
 </local:XivChatWindow>

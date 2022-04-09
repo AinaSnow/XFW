@@ -23,7 +23,7 @@
 
         <TextBlock Grid.Column="0"
                    Grid.Row="0">
-            You are attempting to connect to a server you have never connected to before. Please check the server and ensure the two keys below match.
+            您正在尝试连接到以前从未连接过的服务器。 请检查服务器并确保以下两个键匹配。                                        
         </TextBlock>
 
         <Grid Grid.Column="0"
@@ -123,8 +123,8 @@
         <WrapPanel Grid.Row="3"
                    Grid.Column="0"
                    Orientation="Vertical">
-            <TextBlock>Give the key a name to remember it.</TextBlock>
-            <TextBox x:Name="KeyName">No name</TextBox>
+            <TextBlock>给这个key起个名</TextBlock>
+            <TextBox x:Name="KeyName"></TextBox>
         </WrapPanel>
 
         <TextBlock Grid.Row="4"
@@ -134,8 +134,8 @@
 
         <WrapPanel Grid.Row="5"
                    Grid.Column="0">
-            <Button Click="Yes_Click">Yes</Button>
-            <Button Click="No_Click">No</Button>
+            <Button Click="Yes_Click"> 是 </Button>
+            <Button Click="No_Click"> 否 </Button>
         </WrapPanel>
     </Grid>
 </local:XivChatWindow>

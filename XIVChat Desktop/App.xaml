@@ -20,7 +20,7 @@
             <local:TitleCaseConverter x:Key="TitleCaseConverter" />
 
             <ResourceDictionary.MergedDictionaries>
-                <ui:ThemeResources AccentColor="#02ccee" />
+                <ui:ThemeResources AccentColor="#a59aca" />
                 <ui:XamlControlsResources />
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>

@@ -12,42 +12,46 @@
                      MinHeight="350"
                      WindowStartupLocation="CenterOwner"
                      SizeToContent="WidthAndHeight"
-                     Title="Configuration"
+                     Title="配置"
                      d:DataContext="{d:DesignInstance local:ConfigWindow}">
     <TabControl>
-        <TabItem Header="Servers">
+        <TabItem Header="服务器">
             <cc:SavedServers ItemsSource="{Binding Config.Servers}"
                              ItemDoubleClick="SavedServers_ItemDoubleClick"
                              ControlsVisibility="Visible" />
         </TabItem>
-        <TabItem Header="Window">
+        <TabItem Header="窗口">
             <Grid Margin="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="153*"/>
+                    <ColumnDefinition Width="281*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <StackPanel>
-                    <CheckBox Content="Always on top"
+                <StackPanel Grid.ColumnSpan="2">
+                    <CheckBox Content="窗口置顶"
                               IsChecked="{Binding Config.AlwaysOnTop}"
                               Checked="AlwaysOnTop_Checked"
                               Unchecked="AlwaysOnTop_Unchecked" />
-                    <CheckBox Content="Compact mode"
+                    <CheckBox Content="精简模式"
                               IsChecked="{Binding Config.CompactMode}" />
                     <ComboBox x:Name="ThemeChooser"
-                              ui:ControlHelper.Header="Theme"
+                              ui:ControlHelper.Header="主题"
                               SelectedItem="{Binding Config.Theme}" />
-                    <Slider ui:ControlHelper.Header="Opacity"
+                    <Slider ui:ControlHelper.Header="不透明度"
                             Value="{Binding Config.Opacity}"
                             Minimum=".3"
                             Maximum="1" />
                     <TextBox HorizontalAlignment="Left"
                              PreviewTextInput="NumericInputFilter"
                              Text="{Binding Config.FontSize, Converter={StaticResource DoubleConverter}}"
-                             ui:ControlHelper.Header="Log font size"
+                             ui:ControlHelper.Header="日志字体大小"
                              Width="200" />
-                    <TextBox ui:ControlHelper.Header="Messages to store locally"
+                    <TextBox ui:ControlHelper.Header="本地存储的消息"
                              HorizontalAlignment="Left"
                              PreviewTextInput="NumericInputFilter"
                              Text="{Binding Config.LocalBacklogMessages, Converter={StaticResource UIntConverter}}"
@@ -55,9 +59,8 @@
                 </StackPanel>
 
                 <Button Grid.Row="2"
-                        HorizontalAlignment="Right"
-                        Click="Save_Click">
-                    Save
+                        Click="Save_Click" Grid.Column="1" Margin="235,0,0,0">
+                    保存
                 </Button>
             </Grid>
         </TabItem>

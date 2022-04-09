@@ -63,34 +63,34 @@
             <ScrollViewer Grid.Row="0"
                           Margin="8,0,0, 8">
                 <StackPanel Margin="0,0,24,0">
-                    <CheckBox Content="Process messages as Markdown"
+                    <CheckBox Content="将消息处理为 Markdown"
                               Checked="Markdown_Checked"
                               Unchecked="Markdown_Unchecked"
                               IsChecked="{Binding ExportTab.ProcessMarkdown}" />
 
-                    <CheckBox Content="Show timestamps"
+                    <CheckBox Content="显示时间戳"
                               IsChecked="{Binding ShowTimestamps}" />
 
                     <DatePicker x:Name="AfterDatePicker"
-                                ui:ControlHelper.Header="On or after"
+                                ui:ControlHelper.Header="从"
                                 SelectedDateChanged="AfterDatePicker_OnSelectedDateChanged" />
                     <ui:SimpleTimePicker x:Name="AfterTimePicker"
                                          SelectedDateTimeChanged="AfterTimePicker_OnSelectedDateTimeChanged" />
                     <Button Margin="0,4,0,8"
-                            Content="Clear"
+                            Content="清除"
                             Click="AfterClear_Click" />
 
                     <DatePicker x:Name="BeforeDatePicker"
-                                ui:ControlHelper.Header="On or before"
+                                ui:ControlHelper.Header="到"
                                 SelectedDateChanged="BeforeDatePicker_OnSelectedDateChanged" />
                     <ui:SimpleTimePicker x:Name="BeforeTimePicker"
                                          SelectedDateTimeChanged="BeforeTimePicker_OnSelectedDateTimeChanged" />
                     <Button Margin="0,4,0,8"
-                            Content="Clear"
+                            Content="清除"
                             Click="BeforeClear_Click" />
 
                     <Button Margin="0,8,0,8"
-                            Content="Configure senders">
+                            Content="过滤消息">
                         <ui:FlyoutService.Flyout>
                             <ui:Flyout>
                                 <Grid Height="300">
@@ -138,11 +138,15 @@
                     </Button>
 
                     <TabControl x:Name="Tabs" />
+                    <CheckBox Content="将消息处理为 Markdown"
+                        Checked="Markdown_Checked"
+                        Unchecked="Markdown_Unchecked"
+                        IsChecked="{Binding ExportTab.ProcessMarkdown}" />
                 </StackPanel>
             </ScrollViewer>
 
             <Button Grid.Row="1"
-                    Content="Save"
+                    Content="保存"
                     Click="Save_Click"
                     HorizontalAlignment="Right" />
         </Grid>

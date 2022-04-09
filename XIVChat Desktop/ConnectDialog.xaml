@@ -12,7 +12,7 @@
                      WindowStartupLocation="CenterOwner"
                      ResizeMode="CanResizeWithGrip"
                      ShowInTaskbar="False"
-                     Title="Connect"
+                     Title="连接"
                      d:DataContext="{d:DesignInstance local:ConnectDialog}">
     <Grid Margin="16">
         <Grid.RowDefinitions>
@@ -23,7 +23,7 @@
         <cc:SavedServers x:Name="Servers"
                          ItemsSource="{Binding App.Config.Servers}"
                          ItemDoubleClick="Servers_ItemDoubleClick"
-                         ControlsVisibility="Visible" />
+                         ControlsVisibility="Visible" Loaded="Servers_Loaded" />
 
         <WrapPanel Grid.Row="1"
                    Grid.ColumnSpan="2"
@@ -32,11 +32,11 @@
             <Button Margin="0,0,8,0"
                     IsCancel="True"
                     Click="Cancel_Click">
-                Cancel
+                取消
             </Button>
             <Button IsDefault="True"
                     Click="Connect_Clicked">
-                Connect
+                连接
             </Button>
         </WrapPanel>
     </Grid>

@@ -8,7 +8,7 @@
                      ui:WindowHelper.UseModernWindowStyle="True"
                      WindowStartupLocation="CenterOwner"
                      mc:Ignorable="d"
-                     Title="Manage tabs"
+                     Title="管理标签"
                      Height="250"
                      Width="400"
                      d:DataContext="{d:DesignInstance local:ManageTabs}">
@@ -34,16 +34,16 @@
             <Button HorizontalAlignment="Stretch"
                     Margin="0,0,0,4"
                     Click="AddTab_Click">
-                Add
+                添加
             </Button>
             <Button HorizontalAlignment="Stretch"
                     Margin="0,0,0,4"
                     Click="EditTab_Click">
-                Edit
+                编辑
             </Button>
             <Button HorizontalAlignment="Stretch"
                     Click="DeleteTab_Click">
-                Delete
+                删除
             </Button>
         </WrapPanel>
     </Grid>

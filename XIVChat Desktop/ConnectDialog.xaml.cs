@@ -35,5 +35,10 @@ namespace XIVChat_Desktop {
 
             this.Close();
         }
+
+        private void Servers_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

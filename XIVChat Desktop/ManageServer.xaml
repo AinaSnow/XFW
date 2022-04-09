@@ -9,7 +9,7 @@
                      ui:WindowHelper.UseModernWindowStyle="True"
                      WindowStartupLocation="CenterOwner"
                      SizeToContent="WidthAndHeight"
-                     Title="Manage server"
+                     Title="管理服务器"
                      d:DataContext="{d:DesignInstance local:ManageServer}">
     <Grid Margin="8">
         <Grid.RowDefinitions>
@@ -27,7 +27,7 @@
         <Label VerticalAlignment="Center"
                Grid.Row="0"
                Grid.Column="0">
-            Name
+            名称
         </Label>
         <TextBox Margin="4,0,0,0"
                  Grid.Row="0"
@@ -38,7 +38,7 @@
         <Label VerticalAlignment="Center"
                Grid.Row="1"
                Grid.Column="0">
-            IP Address
+            IP 地址
         </Label>
         <TextBox Margin="4,4,0,0"
                  Grid.Row="1"
@@ -49,7 +49,7 @@
         <Label VerticalAlignment="Center"
                Grid.Row="2"
                Grid.Column="0">
-            Port
+            端口号
         </Label>
         <TextBox Margin="4,4,0,0"
                  Grid.Row="2"
@@ -65,12 +65,12 @@
                    HorizontalAlignment="Right">
             <Button IsCancel="True"
                     Click="Cancel_Click">
-                Cancel
+                取消
             </Button>
             <Button Margin="4,0,0,0"
                     IsDefault="True"
                     Click="Save_Click">
-                Save
+                保存
             </Button>
         </WrapPanel>
     </Grid>

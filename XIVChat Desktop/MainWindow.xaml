@@ -29,27 +29,27 @@
         <Menu Grid.Row="0">
             <MenuItem Header="XIVChat"
                       WindowChrome.IsHitTestVisibleInChrome="{Binding App.Config.CompactMode}">
-                <MenuItem Header="Connect"
+                <MenuItem Header="连接"
                           Click="Connect_Click"
                           IsEnabled="{Binding App.Connected, Converter={StaticResource NotConverter}, UpdateSourceTrigger=PropertyChanged}" />
-                <MenuItem Header="Disconnect"
+                <MenuItem Header="断开"
                           Click="Disconnect_Click"
                           IsEnabled="{Binding App.Connected, UpdateSourceTrigger=PropertyChanged}" />
-                <MenuItem Header="Scan"
+                <MenuItem Header="扫描"
                           Click="Scan_Click" />
                 <Separator />
-                <MenuItem Header="Export"
+                <MenuItem Header="导出"
                           Click="Export_Click" />
                 <Separator />
-                <MenuItem Header="Configuration"
+                <MenuItem Header="配置"
                           Click="Configuration_Click" />
                 <Separator />
-                <MenuItem Header="Exit"
+                <MenuItem Header="退出"
                           Click="Exit_Click" />
             </MenuItem>
-            <MenuItem Header="Players"
+            <MenuItem Header="玩家"
                       WindowChrome.IsHitTestVisibleInChrome="{Binding App.Config.CompactMode}">
-                <MenuItem Header="Friend list"
+                <MenuItem Header="好友名单"
                           Click="FriendList_Click" />
             </MenuItem>
         </Menu>
@@ -190,79 +190,79 @@
                             <TextBlock.ContextMenu>
                                 <ContextMenu
                                     DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                                    <MenuItem Header="Tell"
+                                    <MenuItem Header="悄悄话"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Tell}" />
-                                    <MenuItem Header="Say"
+                                    <MenuItem Header="说话"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Say}" />
-                                    <MenuItem Header="Party"
+                                    <MenuItem Header="小队"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Party}" />
-                                    <MenuItem Header="Alliance"
+                                    <MenuItem Header="团队"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Alliance}" />
-                                    <MenuItem Header="Yell"
+                                    <MenuItem Header="呼喊"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Yell}" />
-                                    <MenuItem Header="Shout"
+                                    <MenuItem Header="喊话"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Shout}" />
-                                    <MenuItem Header="Free Company"
+                                    <MenuItem Header="部队"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.FreeCompany}" />
-                                    <MenuItem Header="PvP Team"
+                                    <MenuItem Header="战队"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.PvpTeam}" />
-                                    <MenuItem Header="Novice Network"
+                                    <MenuItem Header="新人频道"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.NoviceNetwork}" />
-                                    <MenuItem Header="Cross-world Linkshell [1]"
+                                    <MenuItem Header="跨服贝频道 [1]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.CrossLinkshell1}" />
-                                    <MenuItem Header="Cross-world Linkshell [2]"
+                                    <MenuItem Header="跨服贝频道 [2]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.CrossLinkshell2}" />
-                                    <MenuItem Header="Cross-world Linkshell [3]"
+                                    <MenuItem Header="跨服贝频道 [3]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.CrossLinkshell3}" />
-                                    <MenuItem Header="Cross-world Linkshell [4]"
+                                    <MenuItem Header="跨服贝频道 [4]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.CrossLinkshell4}" />
-                                    <MenuItem Header="Cross-world Linkshell [5]"
+                                    <MenuItem Header="跨服贝频道 [5]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.CrossLinkshell5}" />
-                                    <MenuItem Header="Cross-world Linkshell [6]"
+                                    <MenuItem Header="跨服贝频道 [6]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.CrossLinkshell6}" />
-                                    <MenuItem Header="Cross-world Linkshell [7]"
+                                    <MenuItem Header="跨服贝频道 [7]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.CrossLinkshell7}" />
-                                    <MenuItem Header="Cross-world Linkshell [8]"
+                                    <MenuItem Header="跨服贝频道 [8]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.CrossLinkshell8}" />
-                                    <MenuItem Header="Linkshell [1]"
+                                    <MenuItem Header="通讯贝 [1]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Linkshell1}" />
-                                    <MenuItem Header="Linkshell [2]"
+                                    <MenuItem Header="通讯贝 [2]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Linkshell2}" />
-                                    <MenuItem Header="Linkshell [3]"
+                                    <MenuItem Header="通讯贝 [3]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Linkshell3}" />
-                                    <MenuItem Header="Linkshell [4]"
+                                    <MenuItem Header="通讯贝 [4]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Linkshell4}" />
-                                    <MenuItem Header="Linkshell [5]"
+                                    <MenuItem Header="通讯贝 [5]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Linkshell5}" />
-                                    <MenuItem Header="Linkshell [6]"
+                                    <MenuItem Header="通讯贝 [6]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Linkshell6}" />
-                                    <MenuItem Header="Linkshell [7]"
+                                    <MenuItem Header="通讯贝 [7]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Linkshell7}" />
-                                    <MenuItem Header="Linkshell [8]"
+                                    <MenuItem Header="通讯贝 [8]"
                                               Command="local:MainWindow.ChangeChannel"
                                               CommandParameter="{x:Static message:InputChannel.Linkshell8}" />
                                 </ContextMenu>
@@ -284,7 +284,7 @@
         <StatusBar Grid.Row="2"
                    Visibility="{Binding App.Config.CompactMode, Converter={StaticResource InverseBoolToVisibilityConverter}}">
             <StatusBarItem x:Name="LoggedInAs"
-                           Content="Not logged in" />
+                           Content="未登录" />
             <Separator x:Name="LoggedInAsSeparator"
                        Visibility="Collapsed" />
             <StatusBarItem x:Name="CurrentWorld"

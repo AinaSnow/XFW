@@ -8,7 +8,7 @@
                      mc:Ignorable="d"
                      xmlns:ui="http://schemas.modernwpf.com/2019"
                      ui:WindowHelper.UseModernWindowStyle="True"
-                     Title="Server scan"
+                     Title="服务扫描"
                      Closing="ServerScan_OnClosing"
                      ContentRendered="ServerScan_OnContentRendered"
                      MinWidth="400"
@@ -35,10 +35,10 @@
                          ItemDoubleClick="SavedServers_OnItemDoubleClick"
                          ControlsVisibility="Collapsed" />
 
-        <Button Grid.Row="0"
+        <Button
                 Grid.Column="1"
-                Click="Add_Click">
-            Add
+                Click="Add_Click" Margin="5,0,0,0" Width="41">
+            添加
         </Button>
     </Grid>
 </local:XivChatWindow>
