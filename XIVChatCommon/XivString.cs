@@ -35,7 +35,7 @@ namespace XIVChatCommon {
                 if (b == Start) {
                     var kind = reader.ReadByte(); // kind
                     var len = GetInteger(reader); // data length
-                    var data = new BinaryReader(new MemoryStream(reader.ReadBytes((int)len))); // data
+                    var data = new BinaryReader(new MemoryStream(reader.ReadBytes((int) len))); // data
                     var end = reader.ReadByte(); // end
                     if (end != End) {
                         throw new ArgumentException("Input was not a valid XivString");
@@ -46,7 +46,7 @@ namespace XIVChatCommon {
                         case 0x12:
                             var spriteIndex = GetInteger(data);
                             chunks.Add(new IconChunk {
-                                index = (byte)spriteIndex,
+                                index = (byte) spriteIndex,
                             });
                             break;
                         // italics processing
@@ -88,7 +88,7 @@ namespace XIVChatCommon {
                 if (b == Start) {
                     reader.ReadByte(); // kind
                     var len = GetInteger(reader); // data length
-                    reader.ReadBytes((int)len); // data
+                    reader.ReadBytes((int) len); // data
                     var end = reader.ReadByte(); // end
                     if (end != End) {
                         throw new ArgumentException("Input was not a valid XivString");
@@ -105,116 +105,24 @@ namespace XIVChatCommon {
 
         // Thanks, Dalamud
 
-        private enum IntegerType {
-            // used as an internal marker; sometimes single bytes are bare with no marker at all
-            None = 0,
-
-            Byte = 0xF0,
-            ByteTimes256 = 0xF1,
-            Int16 = 0xF2,
-            ByteShl16 = 0xF3,
-            Int16Packed = 0xF4, // seen in map links, seemingly 2 8-bit values packed into 2 bytes with only one marker
-            Int16Shl8 = 0xF5,
-            Int24Special = 0xF6, // unsure how different form Int24 - used for hq items that add 1 million, also used for normal 24-bit values in map links
-            Int8Shl24 = 0xF7,
-            Int8Shl8Int8 = 0xF8,
-            Int8Shl8Int8Shl8 = 0xF9,
-            Int24 = 0xFA,
-            Int16Shl16 = 0xFB,
-            Int24Packed = 0xFC, // used in map links- sometimes short+byte, sometimes... not??
-            Int16Int8Shl8 = 0xFD,
-            Int32 = 0xFE,
-        }
-
         public static uint GetInteger(BinaryReader input) {
-            var t = input.ReadByte();
-            var type = (IntegerType)t;
-            return GetInteger(input, type);
-        }
-
-        private static uint GetInteger(BinaryReader input, IntegerType type) {
-            const byte byteLengthCutoff = 0xF0;
-
-            var t = (byte)type;
-            if (t < byteLengthCutoff) {
-                return (uint)(t - 1);
+            uint marker = input.ReadByte();
+            if (marker < 0xD0) {
+                return marker - 1;
             }
 
-            switch (type) {
-                case IntegerType.Byte:
-                    return input.ReadByte();
+            // the game adds 0xF0 marker for values >= 0xCF
+            // uasge of 0xD0-0xEF is unknown, should we throw here?
+            // if (marker < 0xF0) throw new NotSupportedException();
 
-                case IntegerType.ByteTimes256:
-                    return input.ReadByte() * (uint)256;
-                case IntegerType.ByteShl16:
-                    return (uint)(input.ReadByte() << 16);
-                case IntegerType.Int8Shl24:
-                    return (uint)(input.ReadByte() << 24);
-                case IntegerType.Int8Shl8Int8: {
-                    var v = 0;
-                    v |= input.ReadByte() << 24;
-                    v |= input.ReadByte();
-                    return (uint)v;
-                }
-                case IntegerType.Int8Shl8Int8Shl8: {
-                    var v = 0;
-                    v |= input.ReadByte() << 24;
-                    v |= input.ReadByte() << 8;
-                    return (uint)v;
-                }
+            marker = (marker + 1) & 0b1111;
 
-
-                case IntegerType.Int16:
-                // fallthrough - same logic
-                case IntegerType.Int16Packed: {
-                    var v = 0;
-                    v |= input.ReadByte() << 8;
-                    v |= input.ReadByte();
-                    return (uint)v;
-                }
-                case IntegerType.Int16Shl8: {
-                    var v = 0;
-                    v |= input.ReadByte() << 16;
-                    v |= input.ReadByte() << 8;
-                    return (uint)v;
-                }
-                case IntegerType.Int16Shl16: {
-                    var v = 0;
-                    v |= input.ReadByte() << 24;
-                    v |= input.ReadByte() << 16;
-                    return (uint)v;
-                }
-
-                case IntegerType.Int24Special:
-                // Fallthrough - same logic
-                case IntegerType.Int24Packed:
-                // fallthrough again
-                case IntegerType.Int24: {
-                    var v = 0;
-                    v |= input.ReadByte() << 16;
-                    v |= input.ReadByte() << 8;
-                    v |= input.ReadByte();
-                    return (uint)v;
-                }
-                case IntegerType.Int16Int8Shl8: {
-                    var v = 0;
-                    v |= input.ReadByte() << 24;
-                    v |= input.ReadByte() << 16;
-                    v |= input.ReadByte() << 8;
-                    return (uint)v;
-                }
-                case IntegerType.Int32: {
-                    var v = 0;
-                    v |= input.ReadByte() << 24;
-                    v |= input.ReadByte() << 16;
-                    v |= input.ReadByte() << 8;
-                    v |= input.ReadByte();
-                    return (uint)v;
-                }
-
-                default:
-                    throw new NotSupportedException();
+            var ret = new byte[4];
+            for (var i = 3; i >= 0; i--) {
+                ret[i] = (marker & (1 << i)) == 0 ? (byte) 0 : input.ReadByte();
             }
+
+            return BitConverter.ToUInt32(ret, 0);
         }
     }
 }

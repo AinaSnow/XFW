@@ -50,10 +50,10 @@ namespace XIVChatCommon.Message {
 
         public ushort Raw { get; }
 
-        public ChatType Type => (ChatType)(this.Raw & Clear7);
+        public ChatType Type => (ChatType) (this.Raw & Clear7);
         public ChatSource Source => this.SourceFrom(11);
         public ChatSource Target => this.SourceFrom(7);
-        private ChatSource SourceFrom(ushort shift) => (ChatSource)(1 << ((this.Raw >> shift) & 0xF));
+        private ChatSource SourceFrom(ushort shift) => (ChatSource) (1 << ((this.Raw >> shift) & 0xF));
 
         public ChatCode(ushort raw) {
             this.Raw = raw;
@@ -371,9 +371,9 @@ namespace XIVChatCommon.Message {
         }
 
         private static uint Rgba(byte red, byte green, byte blue, byte alpha = 0xFF) => alpha
-                                                                                        | (uint)(red << 24)
-                                                                                        | (uint)(green << 16)
-                                                                                        | (uint)(blue << 8);
+                                                                                        | (uint) (red << 24)
+                                                                                        | (uint) (green << 16)
+                                                                                        | (uint) (blue << 8);
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1028:Enum Storage should be Int32")]
@@ -616,13 +616,14 @@ namespace XIVChatCommon.Message {
             InputChannel.CrossLinkshell8 => 7,
             _ => 0,
         };
-}
+    }
 
     public enum PlayerListType : byte {
         Party = 1,
         Friend = 2,
         Linkshell = 3,
         CrossLinkshell = 4,
+        Targeting = 5,
     }
 
     [MessagePackObject]
@@ -672,7 +673,7 @@ namespace XIVChatCommon.Message {
         [Key(14)]
         public byte MainLanguage { get; set; }
 
-        public bool HasStatus(PlayerStatus status) => (this.Status & ((ulong)1 << (int)status)) > 0;
+        public bool HasStatus(PlayerStatus status) => (this.Status & ((ulong) 1 << (int) status)) > 0;
     }
 
     public enum PlayerStatus {
@@ -725,7 +726,8 @@ namespace XIVChatCommon.Message {
         Online = 47,
     }
 
-    public abstract class IEncodable {
+    // ReSharper disable once IdentifierTypo
+    public abstract class Encodable {
         protected abstract byte Code { get; }
         protected abstract byte[] PayloadEncode();
 
@@ -733,9 +735,9 @@ namespace XIVChatCommon.Message {
             byte[] payload = this.PayloadEncode();
 
             if (payload.Length == 0) {
-                return new[] {
+                return [
                     this.Code,
-                };
+                ];
             }
 
             byte[] bytes = new byte[1 + payload.Length];
@@ -746,7 +748,7 @@ namespace XIVChatCommon.Message {
     }
 
     public class MillisecondsDateTimeFormatter : IMessagePackFormatter<DateTime> {
-        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime Epoch = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
         public DateTime Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options) {
             var millis = reader.ReadInt64();
@@ -754,7 +756,7 @@ namespace XIVChatCommon.Message {
         }
 
         public void Serialize(ref MessagePackWriter writer, DateTime value, MessagePackSerializerOptions options) {
-            var millis = (long)(value.ToUniversalTime() - Epoch).TotalMilliseconds;
+            var millis = (long) (value.ToUniversalTime() - Epoch).TotalMilliseconds;
             writer.WriteInt64(millis);
         }
     }

@@ -322,7 +322,6 @@ namespace XIVChat_Desktop {
                     break;
                 case ServerOperation.PlayerList:
                     var playerList = ServerPlayerList.Decode(payload);
-
                     if (playerList.Type == PlayerListType.Friend) {
                         var players = playerList.Players
                             .OrderBy(player => !player.HasStatus(PlayerStatus.Online));

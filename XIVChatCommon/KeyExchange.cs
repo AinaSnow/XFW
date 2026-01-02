@@ -47,13 +47,14 @@ namespace XIVChatCommon {
             return new SessionKeys(rx, tx);
         }
 
-        public async static Task<HandshakeInfo> ServerHandshake(KeyPair server, Stream stream) {
+        public static async Task<HandshakeInfo> ServerHandshake(KeyPair server, Stream stream) {
             // get client public key
             byte[] clientPublic = new byte[32];
             await stream.ReadAsync(clientPublic, 0, clientPublic.Length);
 
             // send our public key
             await stream.WriteAsync(server.PublicKey, 0, server.PublicKey.Length);
+            await stream.FlushAsync();
 
             // get shared secret and derive keys
             var keys = ServerSessionKeys(server, clientPublic);
@@ -61,7 +62,7 @@ namespace XIVChatCommon {
             return new HandshakeInfo(clientPublic, keys);
         }
 
-        public async static Task<HandshakeInfo> ClientHandshake(KeyPair client, Stream stream) {
+        public static async Task<HandshakeInfo> ClientHandshake(KeyPair client, Stream stream) {
             // send our public key
             await stream.WriteAsync(client.PublicKey, 0, client.PublicKey.Length);
 

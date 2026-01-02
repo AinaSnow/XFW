@@ -10,7 +10,7 @@ namespace XIVChatCommon {
     public static class SecretMessage {
         private const uint MaxMessageLen = 128_000;
 
-        public async static Task<byte[]> ReadSecretMessage(Stream s, byte[] key, CancellationToken token = default) {
+        public static async Task<byte[]> ReadSecretMessage(Stream s, byte[] key, CancellationToken token = default) {
             var read = 0;
 
             byte[] header = new byte[4 + 24];
@@ -34,7 +34,7 @@ namespace XIVChatCommon {
             return SecretBox.Open(ciphertext, nonce, key);
         }
 
-        public async static Task SendSecretMessage(Stream s, byte[] key, byte[] message, CancellationToken token = default) {
+        public static async Task SendSecretMessage(Stream s, byte[] key, byte[] message, CancellationToken token = default) {
             byte[] nonce = SecretBox.GenerateNonce();
             byte[] ciphertext = SecretBox.Create(message, nonce, key);
             byte[] len = BitConverter.GetBytes((uint)ciphertext.Length);
@@ -46,12 +46,14 @@ namespace XIVChatCommon {
             await s.WriteAsync(len, 0, len.Length, token);
             await s.WriteAsync(nonce, 0, nonce.Length, token);
             await s.WriteAsync(ciphertext, 0, ciphertext.Length, token);
+            await s.FlushAsync(token);
         }
 
-        public async static Task SendSecretMessage(Stream s, byte[] key, IEncodable message, CancellationToken token = default) {
+        public static async Task SendSecretMessage(Stream s, byte[] key, Encodable message, CancellationToken token = default) {
             await SendSecretMessage(s, key, message.Encode(), token);
         }
 
-        public static int MacSize() => 16;
+        public const int MacSize = 16;
+        public const int NonceSize = 24;
     }
 }
