@@ -12,6 +12,7 @@ using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using Lumina.Excel.Sheets;
 using XIVChatCommon.Message;
 using XIVChatCommon.Message.Server;
@@ -284,83 +285,137 @@ namespace XIVChatPlugin {
         }
 
         private int OnFormatFriendList(long a1, long a2, long a3, int a4, nint data, long a6) {
-            // have to call this first to populate cross-world info
-            // NOTE: if this is being called, hook isn't null
-            var ret = this._formatHook!.Original(a1, a2, a3, a4, data, a6);
-
-            if (!this.RequestingFriendList) {
-                return ret;
-            }
-
-            var entry = Marshal.PtrToStructure<FriendListEntryRaw>(data);
-
-            string? jobName = null;
-            if (entry.job > 0) {
-                jobName = this.Plugin.DataManager.GetExcelSheet<ClassJob>().GetRowOrDefault(entry.job)?.Name.ExtractText();
-            }
-
-            // FIXME: remove this try/catch when lumina fixes bug with .Value
-            string? territoryName;
-            try {
-                territoryName = this.Plugin.DataManager.GetExcelSheet<TerritoryType>().GetRowOrDefault(entry.territoryId)?.PlaceName.Value.Name.ExtractText();
-            } catch (NullReferenceException) {
-                territoryName = null;
-            }
-
-            var player = new Player {
-                Name = entry.Name(),
-                FreeCompany = entry.FreeCompany(),
-                Status = entry.flags,
-
-                CurrentWorld = entry.currentWorldId,
-                CurrentWorldName = this.Plugin.DataManager.GetExcelSheet<World>().GetRowOrDefault(entry.currentWorldId)?.Name.ExtractText(),
-                HomeWorld = entry.homeWorldId,
-                HomeWorldName = this.Plugin.DataManager.GetExcelSheet<World>().GetRowOrDefault(entry.homeWorldId)?.Name.ExtractText(),
-
-                Territory = entry.territoryId,
-                TerritoryName = territoryName,
-
-                Job = entry.job,
-                JobName = jobName,
-
-                GrandCompany = entry.grandCompany,
-                GrandCompanyName = this.Plugin.DataManager.GetExcelSheet<GrandCompany>().GetRowOrDefault(entry.grandCompany)?.Name.ExtractText(),
-
-                Languages = entry.langsEnabled,
-                MainLanguage = entry.mainLanguage,
-            };
-            this._friends.Add(player);
-
-            return ret;
+            return this._formatHook!.Original(a1, a2, a3, a4, data, a6);
         }
 
-        private nint OnReceiveFriendList(nint a1, nint data) {
+        private unsafe nint OnReceiveFriendList(nint a1, nint data) {
             // NOTE: if this is being called, hook isn't null
             var ret = this._receiveChunkHook!.Original(a1, data);
 
-            // + 0xc
-            // 1 = party
-            // 2 = friends
-            // 3 = linkshell
-            // doesn't run (though same memory gets updated) for cwl or blacklist
-
-            // + 0x8 is current number of results returned or 0 when end of list
-
             if (!this.RequestingFriendList) {
                 goto Return;
             }
 
-            if (*(byte*) (data + 0xc) != 2 || *(ushort*) (data + 0x8) != 0) {
-                goto Return;
+            try {
+                // data IS the InfoProxyCommonList pointer.
+                // We read fields directly based on FFXIVClientStructs/InfoProxyInterface layout.
+                // EntryCount at 0x10 (from InfoProxyInterface).
+                var entryCount = *(uint*)(data + 0x10);
+                
+                // CharData pointer at 0xB0 (from InfoProxyCommonList).
+                // This points to the start of the array of CharacterData structures.
+                var charDataPtr = *(byte**)(data + 0xB0);
+
+                if (entryCount > 2000 || charDataPtr == null) {
+                    goto Return;
+                }
+
+                this._friends.Clear();
+                var sizeOfEntry = 0x70; // sizeof(CharacterData)
+
+                for (uint i = 0; i < entryCount; i++) {
+                    var entryPtr = charDataPtr + (i * sizeOfEntry);
+                    // Parse the entry from the array
+                    var entry = Marshal.PtrToStructure<FriendListEntry>((nint)entryPtr);
+                    
+                    if (entry.ContentId == 0) continue; // Skip empty/invalid
+
+                    string? jobName = null;
+                    if (entry.Job > 0) {
+                        jobName = this.Plugin.DataManager.GetExcelSheet<ClassJob>().GetRowOrDefault(entry.Job)?.Name.ExtractText();
+                    }
+
+                    string? territoryName = null;
+                    try {
+                        territoryName = this.Plugin.DataManager.GetExcelSheet<TerritoryType>().GetRowOrDefault(entry.TerritoryId)?.PlaceName.Value.Name.ExtractText();
+                    } catch (NullReferenceException) {
+                        territoryName = null;
+                    }
+
+                    var player = new Player {
+                        Name = entry.Name(),
+                        FreeCompany = entry.FreeCompany(),
+                        Status = entry.Status,
+
+                        CurrentWorld = entry.CurrentWorldId,
+                        CurrentWorldName = this.Plugin.DataManager.GetExcelSheet<World>().GetRowOrDefault(entry.CurrentWorldId)?.Name.ExtractText(),
+                        HomeWorld = entry.HomeWorldId,
+                        HomeWorldName = this.Plugin.DataManager.GetExcelSheet<World>().GetRowOrDefault(entry.HomeWorldId)?.Name.ExtractText(),
+
+                        Territory = entry.TerritoryId,
+                        TerritoryName = territoryName,
+
+                        Job = entry.Job,
+                        JobName = jobName,
+
+                        GrandCompany = entry.GrandCompany,
+                        GrandCompanyName = this.Plugin.DataManager.GetExcelSheet<GrandCompany>().GetRowOrDefault(entry.GrandCompany)?.Name.ExtractText(),
+
+                        Languages = entry.LangsEnabled,
+                        MainLanguage = entry.MainLanguage,
+                    };
+                    this._friends.Add(player);
+                }
+
+                this.ReceiveFriendList?.Invoke(this._friends);
+
+            } catch (Exception ex) {
+                Plugin.Log.Error(ex, "Error processing friend list");
             }
 
-            this.ReceiveFriendList?.Invoke(this._friends);
-            this._friends.Clear();
+            Return:
+            // reset properly
             this.RequestingFriendList = false;
 
-            Return:
             return ret;
         }
+
+
+    [StructLayout(LayoutKind.Explicit, Size = 0x70)]
+    internal unsafe struct FriendListEntry {
+        [FieldOffset(0x00)] internal ulong ContentId;
+        [FieldOffset(0x08)] internal ulong Status;
+        
+        [FieldOffset(0x20)] internal uint ExtraFlags;
+        
+        [FieldOffset(0x26)] internal ushort CurrentWorldId;
+        [FieldOffset(0x28)] internal ushort HomeWorldId;
+        [FieldOffset(0x2A)] internal ushort TerritoryId;
+        
+        [FieldOffset(0x2C)] internal byte GrandCompany;
+        [FieldOffset(0x2D)] internal byte MainLanguage;
+        [FieldOffset(0x2E)] internal byte LangsEnabled;
+        
+        [FieldOffset(0x31)] internal byte Job;
+        
+        [FieldOffset(0x32)] internal fixed byte name[32];
+        [FieldOffset(0x52)] internal fixed byte fc[14]; 
+
+        internal string? Name() {
+            fixed (byte* p = this.name) {
+                return HandleString(p, 32);
+            }
+        }
+        internal string? FreeCompany() {
+             fixed (byte* p = this.fc) {
+                 return HandleString(p, 14);
+             }
+        }
+
+        private static string? HandleString(byte* ptr, int len) {
+             int count = 0;
+             while (count < len && ptr[count] != 0) {
+                 count++;
+             }
+             if (count == 0) return null;
+             return Encoding.UTF8.GetString(ptr, count);
+        }
+    }
+    
+    // I will insert the struct at the end of file properly.
+    // Here I only replace the method body.
+    // I need to use write_to_file or multi_replace to put the struct at EOF.
+
 
         public void Dispose() {
             this._friendListHook?.Dispose();
@@ -411,39 +466,5 @@ namespace XIVChatPlugin {
         }
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct FriendListEntryRaw {
-        private readonly ulong unk1;
-        internal readonly ulong flags;
-        private readonly uint unk2;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        private readonly byte[] unk3;
-
-        internal readonly ushort currentWorldId;
-        internal readonly ushort homeWorldId;
-        internal readonly ushort territoryId;
-        internal readonly byte grandCompany;
-        internal readonly byte mainLanguage;
-        internal readonly byte langsEnabled;
-
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        private readonly byte[] unk4;
-
-        internal readonly byte job;
-
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-        private readonly byte[] name;
-
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
-        private readonly byte[] fc;
-
-        private static string? HandleString(IEnumerable<byte> bytes) {
-            var nonNull = bytes.TakeWhile(b => b != 0).ToArray();
-            return nonNull.Length == 0 ? null : Encoding.UTF8.GetString(nonNull);
-        }
-
-        internal string? Name() => HandleString(this.name);
-        internal string? FreeCompany() => HandleString(this.fc);
-    }
 }
